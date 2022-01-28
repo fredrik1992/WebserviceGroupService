@@ -1,0 +1,24 @@
+version: "3"
+
+services:
+  groups:
+    image: registry.gitlab.com/sensera-education-public/groups-rest
+    ports:
+      - 8080:8080
+    environment:
+      - "spring.r2dbc.url=r2dbc:postgresql://postgres:5432/postgres"
+      - "spring.r2dbc.username=postgres"
+      - "spring.r2dbc.password=password"
+      - "spring.flyway.url=jdbc:postgresql://postgres:5432/postgres"
+      - "spring.flyway.user=postgres"
+      - "spring.flyway.password=password"
+      - "cors.allowedOrigin=https://groups.edu.sensera.se/"
+    restart: always
+    links:
+      - "postgres:postgres"
+
+  postgres:
+    image: postgres
+    environment:
+      - "POSTGRES_PASSWORD=password"
+    restart: always
